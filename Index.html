@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Love Contract 💖</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #ffd6e0, #ffe9f0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 700px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  text-align: center;
+  position: relative;
+}
+
+h1 {
+  color: #ff4d6d;
+}
+
+p {
+  line-height: 1.6;
+}
+
+canvas {
+  border: 2px dashed #ff4d6d;
+  border-radius: 10px;
+  margin-top: 10px;
+  touch-action: none;
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border: none;
+  background: #ff4d6d;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #e63956;
+}
+
+.heart {
+  position: fixed;
+  color: #ff4d6d;
+  animation: float 4s linear forwards;
+}
+
+@keyframes float {
+  0% {transform: translateY(0) scale(1); opacity: 1;}
+  100% {transform: translateY(-200px) scale(1.5); opacity: 0;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="contract">
+
+<h1>Love Agreement 💌</h1>
+<p><strong>Contract No:</strong> #S-2026-LOVE-001</p>
+<p><strong>Date:</strong> <span id="date"></span></p>
+
+<p>
+This contract is made between:<br><br>
+<strong>Party A:</strong> Joey 😌<br>
+<strong>Party B:</strong> Sarah Gouda (aka Soso 🤍)
+</p>
+
+<p>
+By signing below, Soso officially agrees to become my girlfriend 💖<br><br>
+She will receive unlimited love, hugs, kisses, gifts, support, and happiness.<br>
+In return, I only ask for love, hugs, and her beautiful self.
+</p>
+
+<h3>Sign here ✍️</h3>
+<canvas id="canvas" width="400" height="200"></canvas><br>
+
+<button onclick="clearCanvas()">Clear</button>
+<button onclick="signContract()">Sign 💖</button>
+
+</div>
+
+<script>
+// Date
+document.getElementById("date").innerText = new Date().toDateString();
+
+// Canvas drawing
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+let drawing = false;
+
+function start(e){
+  drawing = true;
+  draw(e);
+}
+function end(){
+  drawing = false;
+  ctx.beginPath();
+}
+function draw(e){
+  if(!drawing) return;
+  const rect = canvas.getBoundingClientRect();
+  const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+  const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+
+  ctx.lineWidth = 2;
+  ctx.lineCap = "round";
+  ctx.strokeStyle = "#ff4d6d";
+
+  ctx.lineTo(x,y);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x,y);
+}
+
+canvas.addEventListener("mousedown", start);
+canvas.addEventListener("mouseup", end);
+canvas.addEventListener("mousemove", draw);
+
+canvas.addEventListener("touchstart", start);
+canvas.addEventListener("touchend", end);
+canvas.addEventListener("touchmove", draw);
+
+function clearCanvas(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+
+// Hearts animation
+function createHeart(){
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "💖";
+  heart.style.left = Math.random()*100 + "vw";
+  heart.style.top = "80vh";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),4000);
+}
+
+// Sign action
+function signContract(){
+  for(let i=0;i<20;i++){
+    setTimeout(createHeart, i*100);
+  }
+
+  setTimeout(()=>{
+    document.body.innerHTML = `
+      <div style="display:flex;justify-content:center;align-items:center;height:100vh;background:linear-gradient(135deg,#ffd6e0,#ffe9f0);text-align:center;">
+        <div>
+          <h1 style="color:#ff4d6d;">Welcome on Board Soso 💖</h1>
+          <p>You are officially my girlfriend now 😌🤍</p>
+        </div>
+      </div>
+    `;
+  },2000);
+}
+</script>
+
+</body>
+</html>
